@@ -26,6 +26,9 @@ const generateItemElement = function (item) {
         <button class='shopping-item-delete js-item-delete'>
           <span class='button-label'>delete</span>
         </button>
+        <button class='shopping-item-edit js-item-edit'>
+          <span class='button-label'>edit</span>
+        </button>
       </div>
     </li>`;
 };
@@ -145,6 +148,36 @@ const handleToggleFilterClick = function () {
   });
 };
 
+const checkChecker = function(id) {
+  console.log("CHECK CHECKER");
+  const check = store.items.find(item => item.id === id);
+  return check.checked;
+};
+
+const editPrompt = function(id) {
+  console.log("PROMPT EDIT");
+  const food = prompt("Please change the name of the item:", "cheese");
+  const foundItem = store.items.find(item => item.id === id);
+  foundItem.name = food;
+};
+
+const checkEdit = function(id) {
+  const checkCheck = checkChecker(id);
+  if (!checkCheck) {
+    console.log("WE ARE WORKING");
+    editPrompt(id);
+  };
+}
+
+
+const handleEditButtonClick = function () {
+  $('.js-shopping-list').on('click', '.js-item-edit', event => {
+    console.log('CKICK');
+    const id = getItemIdFromElement(event.currentTarget);
+    checkEdit(id);
+    render();
+  });
+};
 /**
  * This function will be our callback when the
  * page loads. It is responsible for initially 
@@ -160,6 +193,7 @@ const handleShoppingList = function () {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleFilterClick();
+  handleEditButtonClick();
 };
 
 // when the page loads, call `handleShoppingList`
